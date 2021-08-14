@@ -1,0 +1,53 @@
+.idea-section {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.main-title {
+    display: flex;
+    justify-content: center;
+    margin: 1em;
+}
+
+
+
+.suggestion-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2em;
+}
+
+.wordcloud-container {
+    width: 100%;
+    padding: 0 30vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.wordcloud-description {
+    display: flex;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.wordcloud-label {
+    width: 360px;
+    height: 100%;
+}
+
+@media (max-width: 750) {
+    .wordcloud-container {
+        flex-direction: column;
+        padding: 0;
+    }
+}

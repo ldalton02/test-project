@@ -1,0 +1,44 @@
+.card-layout {
+    margin: 2em;
+    display: flex;
+    flex-direction: row;
+}
+
+.bucket-list-title {
+    text-align: left;
+    margin: 0;
+    width: 100%;
+}
+
+.top-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    align-items: center;
+}
+
+
+.button-container {
+    display: grid;
+    justify-items: right;
+    justify-self: right;
+    width: 200px;
+}
+
+@media (max-width: 650px) {
+    .top-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bucket-list-title {
+        text-align: center;
+    }
+
+    .button-container {
+        margin: 1em;
+        justify-items: center;
+    }
+}

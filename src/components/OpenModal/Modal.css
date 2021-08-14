@@ -1,0 +1,34 @@
+.Modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    min-height: 500px;
+    min-width: 350px;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 50%;
+}
+
+.Modal-form {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+}
+
+.Modal-buttons {
+    position: fixed;
+    bottom: 15px;
+    width: 75%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}

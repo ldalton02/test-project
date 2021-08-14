@@ -1,0 +1,32 @@
+.outer-header {
+    margin: 0 0;
+    width: 100%;
+    min-height: 8vh;
+    display: grid;
+    align-items: center;
+    padding: 0 0 0.3em 0.5em;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+}
+
+
+.header-links {
+    height: 100%;
+    justify-self: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-right: 1em;
+}
+
+.header-link {
+    margin: 1em;
+    color: white;
+    text-decoration: none;
+}
+
+.header-h4 {
+    margin: 0;
+    padding: none;
+}
