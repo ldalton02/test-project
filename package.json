@@ -7,6 +7,7 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@react-firebase/auth": "^0.2.10",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -25,7 +26,7 @@
     "gatsby-plugin-sharp": "^3.11.0",
     "gatsby-source-filesystem": "^3.11.0",
     "gatsby-transformer-sharp": "^3.11.0",
-    "helmet": "^4.6.0", 
+    "helmet": "^4.6.0",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.12",
     "prop-types": "^15.7.2",

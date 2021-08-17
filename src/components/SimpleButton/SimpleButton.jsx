@@ -6,7 +6,7 @@ import { green, purple } from '@material-ui/core/colors';
 
 const ColorButton = withStyles((theme) => ({
     root: {
-        color: theme.palette.getContrastText(green[500]),
+        color: 'white',
         backgroundColor: '#663399',
         '&:hover': {
             backgroundColor: '#51287a',
@@ -26,7 +26,6 @@ const SimpleButton = (props) => {
     const classes = useStyles();
 
     const clickFunction = () => {
-        console.log('called');
         buttonClick();
     }
 

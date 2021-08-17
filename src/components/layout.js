@@ -1,51 +1,52 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.com/docs/use-static-query/
- */
-
-import * as React from "react"
+import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
 
-import Header from "./header"
+import Header from "./Header/Header"
 import "./layout.css"
 
+import firebase from "gatsby-plugin-firebase"
+import 'firebase/auth';
+
+/*
+idea
+
+Implemet login storage/state in the top level layout component.
+Will be able to store if the user is logged in here and pass down to every component
+
+
+*/
+
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
+  const [loggedin, setLoggedin] = useState(false);
+
+  const [currUser, setCurrUser] = useState(null);
+
+  // set a watch on auth object to do this?
+  useEffect(() => {
+    console.log(`test`, firebase.auth().currentUser)
+  }, [])
+
+
+  const onAuth = firebase.auth().onAuthStateChanged(firebaseUser => {
+    console.log(firebaseUser);
+    setCurrUser(firebaseUser);
+  })
 
   return (
-    <>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <div
+    <div className="App">
+      <Header siteTitle="Make a Bucket List" />
+      {children}
+      <footer
         style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
+          marginTop: `2rem`,
         }}
       >
-        <main>{children}</main>
-        <footer
-          style={{
-            marginTop: `2rem`,
-          }}
-        >
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.com">Gatsby</a>
-        </footer>
-      </div>
-    </>
-  )
+        © {new Date().getFullYear()}, Built with
+        {` `}
+        <a href="https://www.gatsbyjs.com">Gatsby</a>
+      </footer>
+    </div>
+  );
 }
 
 Layout.propTypes = {

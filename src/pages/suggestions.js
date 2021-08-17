@@ -1,14 +1,12 @@
 import React, { useState } from "react"
-import { Link } from "gatsby"
-import Header from "../components/Header/Header"
 import Ideas from '../components/Ideas/Ideas'
+import Layout from "../components/layout"
 
 const SuggestionsPage = () => {
   return (
-    <div className="App">
-      <Header siteTitle="Make A Bucket List" />
+    <Layout>
       <Ideas />
-    </div>
+    </Layout>
   );
 }
 

@@ -4,7 +4,7 @@ import Ideas from '../Ideas/Ideas'
 import BucketList from '../BucketList/BucketList';
 import Modal from '../OpenModal/Modal';
 import { Link } from "gatsby"
-
+import firebase from "gatsby-plugin-firebase"
 
 const HomePage = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -14,12 +14,8 @@ const HomePage = () => {
         setModalOpen(status);
     }
 
-
     return (
         <div className="homePage">
-            <Modal
-                closeModal={() => changeModalStatus(false)}
-                isOpen={modalOpen} />
             <h1 id="main-title">
                 Welcome to Make a Bucket List!
             </h1>

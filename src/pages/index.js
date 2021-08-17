@@ -6,15 +6,15 @@ import HomePage from '../components/HomePage/HomePage'
 import Header from "../components/Header/Header"
 import { BrowserRouter as Router, Route, Switch } from 'react-router';
 import Ideas from "../components/Ideas/Ideas.jsx"
-
+import Layout from "../components/layout"
 const IndexPage = () => {
+
   return (
-    <Router>
-      <div className="App">
-        <HomePage />
-      </div>
-    </Router>
+    <Layout>
+      <HomePage />
+    </Layout>
   );
+
 }
 
 export default IndexPage

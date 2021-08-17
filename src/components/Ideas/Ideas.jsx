@@ -37,7 +37,7 @@ const Ideas = (props) => {
 
 
         // to-do fetch data for bucket list, if exists && signed in
-    }, []);
+    }, []); 
 
     if (!dataLoaded) {
         return (
@@ -59,7 +59,7 @@ const Ideas = (props) => {
                             The words displayed in the word cloud are the most commonly found words in the top Google results for Bucket List Ideas.
                         </p>
                     </div>
-                    <WordCloud words={wordCloudData} />
+                   { <WordCloud words={wordCloudData} /> }
                 </div>
 
                 <h2 className="text-align-center">
@@ -73,7 +73,7 @@ const Ideas = (props) => {
                 </div>
             </div >
         );
-    }
+    } 
 }
 
 export default Ideas;
