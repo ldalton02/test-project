@@ -5,13 +5,10 @@ import Layout from "../components/layout"
 import Seo from "../components/seo"
 import Header from "../components/Header/Header"
 
+import { Redirect } from "@reach/router"
+
 const SecondPage = () => (
-  <Layout>
-    <Seo title="Page two" />
-    <h1>Hi from the second page</h1>
-    <p>Welcome to page 2</p>
-    <Link to="/">Go back to the homepage</Link>
-  </Layout>
+  <Redirect to="/" />
 )
 
 export default SecondPage

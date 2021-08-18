@@ -6,3 +6,41 @@
     align-items: center;
     justify-content: center;
 }
+
+
+.sign-in-paragraph {
+    margin: 0;
+}
+
+.animate-link {
+    text-decoration: none;
+    color: rebeccapurple;
+    position: relative;
+    cursor: pointer;
+}
+
+.animate-link:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    border-bottom: 2px solid rebeccapurple;
+    transition: 0.4s;
+}
+
+.animate-link:hover:after {
+    width: 100%;
+}
+
+.popover-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1em;
+}
+
+.popover-text {
+    margin: 0;
+    padding: 0;
+}

@@ -22,13 +22,8 @@ const Layout = ({ children }) => {
   const [currUser, setCurrUser] = useState(null);
 
   // set a watch on auth object to do this?
-  useEffect(() => {
-    console.log(`test`, firebase.auth().currentUser)
-  }, [])
-
 
   const onAuth = firebase.auth().onAuthStateChanged(firebaseUser => {
-    console.log(firebaseUser);
     setCurrUser(firebaseUser);
   })
 

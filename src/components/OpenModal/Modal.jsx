@@ -70,7 +70,7 @@ const CssTextField = withStyles({
 })(TextField);
 
 const Modal = (props) => {
-    const { data, isOpen, closeModal } = props;
+    const { data, submitFunction, isOpen, closeModal, submitFunctionProps, } = props;
 
     const classes = useStyles();
 
@@ -78,8 +78,18 @@ const Modal = (props) => {
 
     useEffect(() => {
         setOpen(isOpen);
-        console.log(`isopen`, isOpen);
     }, [isOpen])
+
+
+    const saveFunction = () => {
+        if (submitFunctionProps) {
+            
+        }
+        submitFunction();
+    }
+    if (submitFunctionProps) {
+
+    }
 
     return (
         <ReactModal
@@ -116,7 +126,7 @@ const Modal = (props) => {
                 <SimpleButton buttonClick={closeModal}>
                     Close
                 </SimpleButton>
-                <SimpleButton>
+                <SimpleButton buttonClick={submitFunction}>
                     Save
                 </SimpleButton>
             </div>

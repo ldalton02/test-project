@@ -7,7 +7,6 @@ export const getPlaceData = async () => {
     var toReturn;
     await firebase.database().ref('/places').once('value').then(snapshot => {
         let data = snapshotToArray(snapshot);
-        console.log(`firebasehelper`, data);
         toReturn = data;
         return data;
     })
@@ -15,23 +14,24 @@ export const getPlaceData = async () => {
 }
 
 
-export const addBucketListItem = async (name, location, url) => {
+export const addBucketListItem = (name, location, url, uid) => {
     var toStore = {
         name: name,
         location: location,
         url: url,
     };
 
-
+    firebase.database().ref(`/userData/${uid}`).push(toStore).then(res => {
+        console.log(res);
+    }).catch(err => console.log(err));
 }
 
-export const getUserBucketList = async (uid) => {
-    var toReturn;
-    await firebase.database.ref(`/userData/${uid}`).once('value').then(snapshot => {
-        let data = snapshot;
-        console.log(data);
-        toReturn = data;
-        return data;
-    })
-    return toReturn;
+
+const fetchUserDataFromServer = uid => {
+    firebase.database().ref(`/userData/${uid}`).once('value').then(snapshot => {return snapshot})
+}
+
+export const getUserBucketList = (uid) => {
+    let promise = fetchUserDataFromServer(uid);
+    console.log(promise);
 }

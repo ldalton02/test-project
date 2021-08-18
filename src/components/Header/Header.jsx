@@ -2,11 +2,18 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import { Link } from "gatsby"
 import './Header.css'
+import firebase from "gatsby-plugin-firebase"
+
+const handleSignOut = () => {
+    firebase.auth().signOut();
+}
+
 
 const headerLinks = [
-    <Link className="header-link" to="/sign-in"> Sign In </Link>,
     <Link className="header-link" to="/"> Bucket List </Link>,
-    <Link className="header-link" to='/suggestions' > Suggestions </Link>
+    <Link className="header-link" to='/suggestions' > Suggestions </Link>,
+    <Link className="header-link" to="/sign-in"> Sign In </Link>,
+    <Link className="header-link" to='/sign-out'> Sign Out </Link>
 ];
 
 
@@ -14,16 +21,18 @@ const headerLinks = [
 
 const Header = (props) => {
 
-    const { siteTitle, links } = props;
+    const { siteTitle } = props;
 
 
     const renderHeaderLinks = () => {
-        return headerLinks.map(item => {
+        const array = headerLinks.map((item, index) => {
             return (
-                <h4 className="header-h4">
+                <h4 key={index} className="header-h4">
                     {item}
                 </h4>);
         })
+
+        return array;
     }
 
     return (

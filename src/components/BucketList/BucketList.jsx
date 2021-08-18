@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ListCard from './ListCard/ListCard';
 import { createStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,8 +8,10 @@ import "./BucketList.css"
 import SimpleButton from '../SimpleButton/SimpleButton';
 import { getDefaultItems } from '../../utils/suggestions';
 import firebase from "gatsby-plugin-firebase"
-import { getPlaceData } from '../FirebaseHelper/FirebaseHelper';
+import { getPlaceData, getUserBucketList, addBucketListItem } from '../FirebaseHelper/FirebaseHelper';
 import Modal from '../OpenModal/Modal';
+import LoadingIcons from 'react-loading-icons'
+
 
 const currentDisplay = {
     title: 'test',
@@ -34,36 +36,53 @@ const addToDataBase = () => {
 const BucketList = (props) => {
     const { changeModalStatus } = props;
     const classes = useStyles();
+
     const [signedIn, setSignedIn] = useState(false);
-    const [user, setUser] = useState(null);
-    const [renderItems, setRenderItems] = useState(getDefaultItems());
 
-    const [userData, setUserData] = useState(null);
+    const [readyToDisplay, setReadyToDisplay] = useState(false);
 
-    async function getData() {
-        await getPlaceData();
+    const [user, setUser] = useState(firebase.auth().currentUser);
+
+
+    const [renderItems, setRenderItems] = useState(null);
+
+    function setUserDatas(im, callback) {
+        console.log(`called setuserdatas`);
+        setSignedIn(true);
+        console.log(`user`, user);
+        console.log(im);
+        callback(im.uid);
+    }
+
+    function getUserRenderItems(uid) {
+        console.log(`callback called`);
+        let data = [];
+        firebase.database().ref(`/userData/${uid}`).once('value')
+            .then(snapshot => {
+                snapshot.forEach(each => {
+                    data.push(each.exportVal());
+                })
+                setRenderItems(data);
+            })
     }
 
     useEffect(() => {
-        return firebase.auth().onAuthStateChanged((im) => {
-            if (im) {
-                console.log(im);
-                setSignedIn(true);
-                setUser({
-                    displayName: im.displayName,
-                    email: im.email,
-                    photo: im.photoURL,
-                    uid: im.uid,
-                });
-                getPlaceData()
-                    .then(res => {
-                        setUserData(res);
-                    })
-            } else {
-                setSignedIn(false);
-            }
-        });
+        if (firebase.auth().currentUser) {
+            setUserDatas(firebase.auth().currentUser, getUserRenderItems);
+        } else {
+            setSignedIn(false);
+            setReadyToDisplay(true);
+            setRenderItems(getDefaultItems());
+        }
     }, []);
+
+    useEffect(() => {
+        if (renderItems) {
+            setTimeout(() => {
+            setReadyToDisplay(true);
+            }, 1000);
+        }
+    }, [renderItems])
 
     const renderDisplayItems = () => {
         if (renderItems.length === 0) {
@@ -71,16 +90,20 @@ const BucketList = (props) => {
                 Add some items to your list to see them here!
             </p>)
         }
-        return renderItems.map((item, index) => {
-            return (
-                <Grid key={index} item
-                >
-                    <ListCard place={item.place} location={item.location}
-                        url={item.url}
-                        cardClick={changeModalStatus} />
-                </Grid>
-            )
-        })
+        if (renderItems) {
+            return renderItems.map((item, index) => {
+                return (
+                    <Grid key={index} item
+                    >
+                        <ListCard place={item.place} location={item.location}
+                            url={item.url}
+                            cardClick={openModal} />
+                    </Grid>
+                )
+            })
+        } else {
+            return null;
+        }
     }
 
     const addNewItem = (place, location, url) => {
@@ -89,12 +112,12 @@ const BucketList = (props) => {
             location: location,
             url: url,
         }
-        setRenderItems([...renderItems, newItem]);
+        addBucketListItem(place, location, url, user.uid);
+        getUserRenderItems(firebase.auth().currentUser.uid);
     }
 
 
     const bucketListButtonClick = () => {
-        console.log(userData);
         changeModalStatus(true);
     }
 
@@ -102,6 +125,7 @@ const BucketList = (props) => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const openModal = () => {
+        console.log(user.uid)
         setModalOpen(true);
     }
 
@@ -109,7 +133,9 @@ const BucketList = (props) => {
         <div>
             <Modal
                 closeModal={() => setModalOpen(false)}
-                isOpen={modalOpen} />
+                isOpen={modalOpen}
+                submitFunction={addNewItem}
+                submitFunctionProps />
             <div className="top-grid">
                 <h2 className="bucket-list-title">
                     My Bucket List
@@ -120,7 +146,7 @@ const BucketList = (props) => {
                     </SimpleButton>
                 </div>
             </div>
-            <Container justifyContent='center' className={classes.cardGrid} maxWidth="xl">
+            <Container justifycontent='center' className={classes.cardGrid} maxWidth="xl">
                 <Grid
                     container
                     direction="row"
@@ -128,10 +154,9 @@ const BucketList = (props) => {
                     alignItems="stretch"
                     spacing={2}
                 >
-                    {renderDisplayItems()}
+                    {readyToDisplay ? renderDisplayItems() : <LoadingIcons.Bars fill="#663399" />}
                 </Grid>
             </Container>
-            <p> Sign in to create your own bucket list! </p>
         </div>
     );
 }
