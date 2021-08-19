@@ -8,10 +8,11 @@ import "./BucketList.css"
 import SimpleButton from '../SimpleButton/SimpleButton';
 import { getDefaultItems } from '../../utils/suggestions';
 import firebase from "gatsby-plugin-firebase"
-import { getPlaceData, getUserBucketList, addBucketListItem , updateDatabase} from '../FirebaseHelper/FirebaseHelper';
+import { getPlaceData, getUserBucketList, addBucketListItem, updateDatabase } from '../FirebaseHelper/FirebaseHelper';
 import Modal from '../OpenModal/Modal';
 import LoadingIcons from 'react-loading-icons'
 import EditModal from '../OpenModal/EditModal';
+import 'firebase/auth';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -29,7 +30,9 @@ const BucketList = (props) => {
 
     const [signedIn, setSignedIn] = useState(false);
     const [readyToDisplay, setReadyToDisplay] = useState(false);
-    const [user, setUser] = useState(firebase.auth().currentUser);
+
+
+    const [user, setUser] = useState(typeof window !== 'undefined' ? firebase.auth().currentUser : null);
     const [renderItems, setRenderItems] = useState(null);
 
 
@@ -61,13 +64,16 @@ const BucketList = (props) => {
 
     function getUserRenderItems(uid) {
         let data = [];
-        firebase.database().ref(`/userData/${uid}`).once('value')
-            .then(snapshot => {
-                snapshot.forEach(each => {
-                    data.push(each.exportVal());
+        if (typeof window !== 'undefined') {
+            firebase.database().ref(`/userData/${uid}`).once('value')
+                .then(snapshot => {
+                    snapshot.forEach(each => {
+                        data.push(each.exportVal());
+                    })
+                    setRenderItems(data);
                 })
-                setRenderItems(data);
-            })
+
+        }
     }
 
     // CREATE DISPLAY ITEMS FROM DATA
@@ -125,7 +131,7 @@ const BucketList = (props) => {
     }
 
     // NEED TO PERSIST ITEMS IN DATABASE ONCE SAVED?
-    
+
     // OPENING ADD NEW ITEM MODAL
     const [modalOpen, setModalOpen] = useState(false);
     const addNewItem = (place, location, url) => {

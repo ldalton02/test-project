@@ -8,7 +8,7 @@ import firebase from "gatsby-plugin-firebase"
 import { redirectTo, navigate } from "@reach/router"
 import { useEffect } from 'react';
 import Popover from '@material-ui/core/Popover';
-
+import 'firebase/auth'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -113,7 +113,7 @@ const SignInPage = (props) => {
             <Popover
                 id={popupOpen ? 'sign-in-popup' : undefined}
                 open={popupOpen}
-                anchorEl={'#sign-in-title'}
+                //anchorEl={'#sign-in-title'}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'center',
