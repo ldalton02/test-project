@@ -1,20 +1,14 @@
 import ReactModal from 'react-modal';
 import React, { useState, useEffect } from 'react';
 import {
-    alpha,
-    ThemeProvider,
     withStyles,
     makeStyles,
-    createTheme,
 } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
-import InputLabel from '@material-ui/core/InputLabel';
+
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import { green } from '@material-ui/core/colors';
+
 import './Modal.css'
 import SimpleButton from '../SimpleButton/SimpleButton';
-import SimpleButtonGroup from '../SimpleButtonGroup/SimpleButtonGroup';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,8 +44,8 @@ const CssTextField = withStyles({
     },
 })(TextField);
 
-const Modal = (props) => {
-    const { data, submitFunction, isOpen, closeModal, submitFunctionProps, } = props;
+const EditModal = (props) => {
+    const { saveEdits, isOpen, closeModal, values, deleteItem } = props;
 
     const classes = useStyles();
 
@@ -61,16 +55,24 @@ const Modal = (props) => {
         setOpen(isOpen);
     }, [isOpen])
 
-   
-   const [name, setName] = useState(null);
-   const [location, setLocation] = useState(null);
-   const [url, setUrl] = useState(null);
-   
-    const saveFunction = () => {
-        submitFunction(name, location, url);
+
+    useEffect(() => {
+        setName(values.name);
+        setLocation(values.location);
+        setUrl(values.url);
+        setIndex(values.index);
+    }, [values]);
+
+    const [name, setName] = useState(values.name);
+    const [location, setLocation] = useState(values.name);
+    const [url, setUrl] = useState(values.url);
+    const [index, setIndex] = useState(values.index);
+
+    const saveButton = () => {
+        saveEdits(name, location, url, values.index);
         closeModal();
     }
-   
+
     return (
         <ReactModal
             className="Modal"
@@ -84,6 +86,7 @@ const Modal = (props) => {
                 <CssTextField
                     className={classes.margin}
                     label="Place"
+                    defaultValue={values.name}
                     required
                     variant="outlined"
                     id="validation-outlined-input"
@@ -92,6 +95,7 @@ const Modal = (props) => {
                 <CssTextField
                     className={classes.margin}
                     label="Location"
+                    defaultValue={values.location}
                     required
                     variant="outlined"
                     id="validation-outlined-input"
@@ -99,17 +103,22 @@ const Modal = (props) => {
                 />
                 <CssTextField
                     className={classes.margin}
+                    defaultValue={values.url}
                     label="Image Source"
                     variant="outlined"
                     id="validation-outlined-input"
                     onChange={value => setUrl(value.target.value)}
                 />
             </form>
-            <div className="Modal-buttons Create-modal-buttons">
+            <div className="Modal-buttons Edit-modal-buttons">
                 <SimpleButton buttonClick={closeModal}>
                     Close
                 </SimpleButton>
-                <SimpleButton buttonClick={saveFunction}>
+                <SimpleButton buttonClick={() => deleteItem(values.index)}
+                    deleteButton={true}>
+                    Delete This Item
+                </SimpleButton>
+                <SimpleButton buttonClick={saveButton}>
                     Save
                 </SimpleButton>
             </div>
@@ -117,4 +126,4 @@ const Modal = (props) => {
     )
 }
 
-export default Modal;
+export default EditModal;

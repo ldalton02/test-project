@@ -26,6 +26,13 @@ export const addBucketListItem = (name, location, url, uid) => {
     }).catch(err => console.log(err));
 }
 
+export const updateDatabase = (renderItems, uid) => {
+    let ref = firebase.database().ref(`/userData/${uid}`).set(null);
+    renderItems.forEach(element => {
+        addBucketListItem(element.name, element.location, element.url, uid);
+    });
+}
+
 
 const fetchUserDataFromServer = uid => {
     firebase.database().ref(`/userData/${uid}`).once('value').then(snapshot => {return snapshot})

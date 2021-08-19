@@ -28,36 +28,61 @@ const useStyles = makeStyles((theme) => ({
 const SignInPage = (props) => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-
+    const [confirmPassword, setConfirmPassword] = useState(null);
     const [signInSuccessful, setSignInSuccessful] = useState(false);
 
-    const createAccount = () => {
 
-        console.log(email, password);
+    const [mode, setMode] = useState('sign-in');
+
+    const changeMode = (newMode) => {
+        setErrorText(null);
+        setMode(newMode);
+    }
+
+
+
+    const [errorText, setErrorText] = useState(null);
+
+
+    const createAccount = () => {
         var user = null;
-        firebase.auth().createUserWithEmailAndPassword(email, password)
+        if (confirmPassword !== password) {
+            setErrorText('The passwords do not match.')
+        } else {
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    user = userCredential.user;
+                    console.log(user);
+                    setSignInSuccessful(true);
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    console.log(errorCode);
+                    if (errorCode === "auth/email-already-in-use") {
+                        setErrorText('This email is already in use!')
+                    } else if (errorCode === 'auth/invalid-email') {
+                        setErrorText('Please enter a valid email.')
+                    }
+                });
+        }
+    }
+
+    const signIn = () => {
+        var user = null;
+        firebase.auth().signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 user = userCredential.user;
-                console.log(user);
                 setSignInSuccessful(true);
             })
             .catch((error) => {
                 var errorCode = error.code;
-                console.log(error);
-                if (errorCode === "auth/email-already-in-use") {
-                    firebase.auth().signInWithEmailAndPassword(email, password)
-                        .then((userCredential) => {
-                            user = userCredential.user;
-                            setSignInSuccessful(true);
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                console.log(errorCode);
+                if (errorCode === "auth/user-not-found") {
+                    setErrorText('An account with this email does not exist.')
+                } else if (errorCode === 'auth/wrong-password') {
+                    setErrorText('The password is incorrect for this account.')
                 }
-            });
-
-
-        // console.log(`test`, firebase.auth().currentUser);
+            })
     }
 
 
@@ -76,7 +101,7 @@ const SignInPage = (props) => {
     useEffect(() => {
         if (signInSuccessful) {
             setTimeout(() => {
-            navigate('/')
+                navigate('/')
             }, 1500);
             setPopupOpen(true);
         }
@@ -88,29 +113,31 @@ const SignInPage = (props) => {
             <Popover
                 id={popupOpen ? 'sign-in-popup' : undefined}
                 open={popupOpen}
-                anchorEl={document.getElementById('sign-in')}
+                anchorEl={document.getElementById('sign-in-title')}
                 anchorOrigin={{
-                    vertical: 'center',
+                    vertical: 'top',
                     horizontal: 'center',
                 }}
                 transformOrigin={{
-                    vertical: 'center',
+                    vertical: 'bottom',
                     horizontal: 'center',
                 }}
             >
                 <div className="popover-text-container">
                     <h2 className="popover-text">
-                        Sign in successful!
+                        {mode === 'sign-in' ? 'Sign in successful!' : 'Account created successfully!'}
                     </h2>
                 </div>
             </Popover>
-            <h2>
-                Sign in
-            </h2>
+            <h1 id="sign-in-title">
+                {mode === 'sign-in' ? "Sign in" : "Create an Account"}
+            </h1>
             <p className="sign-in-paragraph">
-                Sign in to view you own bucket list.
+                {mode === 'sign-in' ? "Sign in to view" : "Create an account to start"} your own bucket list.
             </p>
-
+            <p className="error-text">
+                {errorText}
+            </p>
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField required id="standard-required" label="Email" type="email"
                     onChange={value => setEmail(value.target.value)} />
@@ -122,19 +149,30 @@ const SignInPage = (props) => {
                     type="password"
                     autoComplete="current-password"
                 />
+                {mode === 'sign-in' ? null :
+                    <TextField
+                        required
+                        onChange={value => setConfirmPassword(value.target.value)}
+                        id="standard-password-input"
+                        label="Confirm Password"
+                        type="password"
+                        autoComplete="current-password"
+                    />
+                }
             </form>
-            <SimpleButton buttonClick={createAccount} >
-                Sign In
+
+            <SimpleButton buttonClick={mode === 'sign-in' ? signIn : createAccount} >
+                {mode === 'sign-in' ? "Sign in" : "Create an Account"}
             </SimpleButton>
-            <p className="sign-in-paragraph">
-                Don't have an account? <a className="animate-link">Create one</a> to get started!
-            </p>
-            <SimpleButton buttonClick={checkSignIn} >
-                Check
-            </SimpleButton>
-            <SimpleButton buttonClick={handleSignOut}>
-                Sign Out
-            </SimpleButton>
+            {mode === 'sign-in' ?
+                <h4 className="sign-in-paragraph">
+                    Don't have an account? <a className="animate-link" onClick={() => changeMode('create')}>Create one</a> to get started!
+                </h4>
+                :
+                <h4 className="sign-in-paragraph">
+                    Already have an account? <a className="animate-link" onClick={() => changeMode('sign-in')}>Sign in! </a>
+                </h4>
+            }
         </div>
     );
 }

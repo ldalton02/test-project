@@ -10,23 +10,23 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
     root: {
-      minWidth: 250,
-      maxWidth: 250,
+      minWidth: 350,
+      minHeight: 350,
       margin: '1em',
     },
     media: {
-      height: 140,
+      height: 250,
     },
   });
   
 
 const ListCard = (props) => {
 
-    const { place, location, url, cardClick } = props;
+    const { place, location, url, cardClick, index } = props;
 
     const classes = useStyles();
 
-    return (<Card onClick={() => cardClick(true)} className={classes.root}>
+    return (<Card onClick={() => cardClick(index)} className={classes.root}>
         <CardActionArea>
           <CardMedia
             className={classes.media}

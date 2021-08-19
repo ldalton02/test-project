@@ -17,6 +17,11 @@
     align-items: center;
 }
 
+.default-notice {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 
 .button-container {
     display: grid;

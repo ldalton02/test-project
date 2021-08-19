@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, {useState} from "react"
 import PropTypes from "prop-types"
 import { Link } from "gatsby"
 import './Header.css'
@@ -23,17 +23,15 @@ const Header = (props) => {
 
     const { siteTitle } = props;
 
+    const [currentUser, setCurrentUser] = useState(firebase.auth().currentUser);
 
-    const renderHeaderLinks = () => {
-        const array = headerLinks.map((item, index) => {
-            return (
-                <h4 key={index} className="header-h4">
-                    {item}
-                </h4>);
-        })
-
-        return array;
-    }
+    firebase.auth().onAuthStateChanged(() => {
+        if (!firebase.auth().currentUser) {
+            setCurrentUser(null);
+        } else {
+            setCurrentUser(firebase.auth().currentUser);
+        }
+    })
 
     return (
         <header
@@ -56,7 +54,20 @@ const Header = (props) => {
                     </h1>
                 </div>
                 <div className="header-links">
-                    {renderHeaderLinks()}
+                    <h4 className="header-h4">
+                        <Link className="header-link" to="/"> Bucket List </Link>
+                    </h4>
+                    <h4 className="header-h4">
+                        <Link className="header-link" to='/suggestions' > Suggestions </Link>
+                    </h4>
+                    <h4 className="header-h4">
+                        <Link className="header-link" to="/sign-in"> Sign In </Link>
+                    </h4>
+                    { currentUser && 
+                    <h4 className="header-h4">
+                        <Link className="header-link" to='/sign-out'> Sign Out </Link>
+                    </h4>
+                    }
                 </div>
             </div>
         </header>

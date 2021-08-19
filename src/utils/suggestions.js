@@ -57,22 +57,22 @@ export function getSuggestionData() {
 
 const tempRenderItems = [
     {
-        place: 'Paris',
+        name: 'Paris',
         location: 'Paris, France',
         url: 'https://th.bing.com/th/id/R.2de4d139aa176401b60750b71c33be82?rik=w3hMuGFsR0RmcQ&riu=http%3a%2f%2fwww.wallpapergeeks.com%2fwp-content%2fuploads%2f2013%2f12%2fEiffel-Tower-Dusk-Paris-France-Wallpaper2.jpg&ehk=b6AYnqtyaymYIC04gA4F6spj0IWjnOlM7VEhvjsITV4%3d&risl=&pid=ImgRaw&r=0',
     },
     {
-        place: 'Rome',
+        name: 'Rome',
         location: 'Rome, Italy',
         url: 'https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20180301194244/Rome-Tile.jpg',
     },
     {
-        place: 'Mexico City',
+        name: 'Mexico City',
         location: 'La Ciudad de Mexico, Mexico',
         url: 'https://th.bing.com/th/id/OIP.-qKFeYbyPScYREs_ZNM41QHaEo?pid=ImgDet&rs=1',
     },
     {
-        place: 'Bungee Jumping',
+        name: 'Bungee Jumping',
         location: 'Anywhere',
         url: 'https://th.bing.com/th/id/OIP.L8528ZiGAJkE1ACmNri_6gHaEK?pid=ImgDet&rs=1',
     },

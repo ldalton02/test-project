@@ -1,6 +1,17 @@
 .homePage {
     padding: 4vh 17vw 0 17vw;
 }
+
+@media (max-width: 600px) {
+    .homePage {
+        padding: 4vh 2vw 0 2vw;
+    }
+}
+
+.homepage-link {
+    text-decoration: none;
+}
+
 .homePage-title {
     display: flex;
     flex-direction: column;
@@ -29,8 +40,13 @@ h1 {
 
 .main-description {
     margin: 1em;
+    padding: 0 1em;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.text-align-center {
+    text-align: center;
 }

@@ -29,6 +29,13 @@
     bottom: 15px;
     width: 75%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
     align-items: center;
+}
+
+.Create-modal-buttons {
+    grid-template-columns: 1fr 1fr;
+}
+
+.Edit-modal-buttons {
+    grid-template-columns: 1fr 1fr 1fr;
 }

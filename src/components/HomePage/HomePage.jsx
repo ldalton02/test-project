@@ -21,20 +21,18 @@ const HomePage = () => {
             </h1>
 
             <div className="main-description">
-                <h3>
-                    Have you been yearning for some new adventures or to check a few things off your bucket list?
+                <h3 className="text-align-center">
+                    Have you been yearning for some new adventures or to check some things off your bucket list?
                 </h3>
                 <p>
                     Use Make a Bucket List to help decide what your next big adventure will be!
                 </p>
                 <p>
                     Some suggestions to help you find your next destination can be found on the
-                    <Link to="/suggestions"> suggestions page </Link>.
+                    <Link className='homepage-link' to="/suggestions"> <a className="animate-link"> suggestions page </a> </Link>.
                 </p>
                 <p>
                     You can also directly edit your own bucket list on the home page here!
-                    <br />
-                    Sign in to save your list.
                 </p>
             </div>
 

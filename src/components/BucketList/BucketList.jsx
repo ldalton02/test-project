@@ -8,16 +8,10 @@ import "./BucketList.css"
 import SimpleButton from '../SimpleButton/SimpleButton';
 import { getDefaultItems } from '../../utils/suggestions';
 import firebase from "gatsby-plugin-firebase"
-import { getPlaceData, getUserBucketList, addBucketListItem } from '../FirebaseHelper/FirebaseHelper';
+import { getPlaceData, getUserBucketList, addBucketListItem , updateDatabase} from '../FirebaseHelper/FirebaseHelper';
 import Modal from '../OpenModal/Modal';
 import LoadingIcons from 'react-loading-icons'
-
-
-const currentDisplay = {
-    title: 'test',
-    location: 'test',
-    media: 'Paris',
-}
+import EditModal from '../OpenModal/EditModal';
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -27,45 +21,19 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-
-const addToDataBase = () => {
-
-}
-
-
 const BucketList = (props) => {
     const { changeModalStatus } = props;
+
     const classes = useStyles();
 
+
     const [signedIn, setSignedIn] = useState(false);
-
     const [readyToDisplay, setReadyToDisplay] = useState(false);
-
     const [user, setUser] = useState(firebase.auth().currentUser);
-
-
     const [renderItems, setRenderItems] = useState(null);
 
-    function setUserDatas(im, callback) {
-        console.log(`called setuserdatas`);
-        setSignedIn(true);
-        console.log(`user`, user);
-        console.log(im);
-        callback(im.uid);
-    }
 
-    function getUserRenderItems(uid) {
-        console.log(`callback called`);
-        let data = [];
-        firebase.database().ref(`/userData/${uid}`).once('value')
-            .then(snapshot => {
-                snapshot.forEach(each => {
-                    data.push(each.exportVal());
-                })
-                setRenderItems(data);
-            })
-    }
-
+    // BEFORE RENDER, IF USER IS LOGGED IN FETCH DATA, OTHERWISE SHOW DEFAULT LIST
     useEffect(() => {
         if (firebase.auth().currentUser) {
             setUserDatas(firebase.auth().currentUser, getUserRenderItems);
@@ -76,14 +44,33 @@ const BucketList = (props) => {
         }
     }, []);
 
+    // WHEN RENDER ITEMS IS SET, SET READY TO DISPLAY TO REMOVE LOADING ICON
     useEffect(() => {
         if (renderItems) {
             setTimeout(() => {
-            setReadyToDisplay(true);
+                setReadyToDisplay(true);
             }, 1000);
         }
     }, [renderItems])
 
+    /// RETRIEVING USER DATA FROM FIREBASE
+    function setUserDatas(im, callback) {
+        setSignedIn(true);
+        callback(im.uid);
+    }
+
+    function getUserRenderItems(uid) {
+        let data = [];
+        firebase.database().ref(`/userData/${uid}`).once('value')
+            .then(snapshot => {
+                snapshot.forEach(each => {
+                    data.push(each.exportVal());
+                })
+                setRenderItems(data);
+            })
+    }
+
+    // CREATE DISPLAY ITEMS FROM DATA
     const renderDisplayItems = () => {
         if (renderItems.length === 0) {
             return (<p>
@@ -95,9 +82,10 @@ const BucketList = (props) => {
                 return (
                     <Grid key={index} item
                     >
-                        <ListCard place={item.place} location={item.location}
+                        <ListCard place={item.name} location={item.location}
                             url={item.url}
-                            cardClick={openModal} />
+                            index={index}
+                            cardClick={openEditModal} />
                     </Grid>
                 )
             })
@@ -106,27 +94,56 @@ const BucketList = (props) => {
         }
     }
 
-    const addNewItem = (place, location, url) => {
-        const newItem = {
-            place: place,
+    // OPENING EDIT MODAL
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [editModalProps, setEditModalProps] = useState({
+        name: '',
+        location: '',
+        url: '',
+        index: '',
+    })
+    const openEditModal = (index) => {
+        let toPass = {
+            name: renderItems[index].name,
+            location: renderItems[index].location,
+            url: renderItems[index].url,
+            index: index,
+        }
+        setEditModalProps(toPass);
+        setEditModalOpen(true);
+    }
+    const saveEdits = (name, location, url, index) => {
+        let newValue = {
+            name: name,
             location: location,
             url: url,
         }
+        let renderItemsCopy = renderItems;
+        renderItemsCopy[index] = newValue;
+        setRenderItems([...renderItemsCopy]);
+        updateDatabase(renderItems, firebase.auth().currentUser.uid);
+    }
+
+    // NEED TO PERSIST ITEMS IN DATABASE ONCE SAVED?
+    
+    // OPENING ADD NEW ITEM MODAL
+    const [modalOpen, setModalOpen] = useState(false);
+    const addNewItem = (place, location, url) => {
         addBucketListItem(place, location, url, user.uid);
         getUserRenderItems(firebase.auth().currentUser.uid);
     }
-
-
-    const bucketListButtonClick = () => {
-        changeModalStatus(true);
+    const openModal = () => {
+        setModalOpen(true);
     }
 
-
-    const [modalOpen, setModalOpen] = useState(false);
-
-    const openModal = () => {
-        console.log(user.uid)
-        setModalOpen(true);
+    // deleting an item
+    const deleteItem = (indexToDelete) => {
+        const renderItemsCopy = renderItems.filter((each, index) => {
+            return (index !== indexToDelete);
+        })
+        setRenderItems([...renderItemsCopy]);
+        updateDatabase(renderItems, firebase.auth().currentUser.uid);
+        setEditModalOpen(false);
     }
 
     return (
@@ -134,8 +151,14 @@ const BucketList = (props) => {
             <Modal
                 closeModal={() => setModalOpen(false)}
                 isOpen={modalOpen}
-                submitFunction={addNewItem}
-                submitFunctionProps />
+                submitFunction={addNewItem} />
+            <EditModal
+                closeModal={() => setEditModalOpen(false)}
+                isOpen={editModalOpen}
+                saveEdits={saveEdits}
+                values={editModalProps}
+                deleteItem={deleteItem}
+            />
             <div className="top-grid">
                 <h2 className="bucket-list-title">
                     My Bucket List
@@ -146,6 +169,10 @@ const BucketList = (props) => {
                     </SimpleButton>
                 </div>
             </div>
+            {!signedIn &&
+                <div className="default-notice"><h3>
+                    This is the default bucket list. Sign in to create your own!
+                </h3></div>}
             <Container justifycontent='center' className={classes.cardGrid} maxWidth="xl">
                 <Grid
                     container
