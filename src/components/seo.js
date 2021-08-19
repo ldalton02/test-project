@@ -7,17 +7,16 @@
 
 import * as React from "react"
 import PropTypes from "prop-types"
+import { Helmet } from "react-helmet"
 
 function Seo({ description, lang, meta, title }) {
-  
- // const metaDescription = description || site.siteMetadata.description
- // const defaultTitle = site.siteMetadata?.title
+ 
+
+  const metaDescription = "Find some new places to visit";
+  const defaultTitle = "Make a Bucket List";
 
   return (
-    <p>
-      Build 
-    </p>
-    {/* <Helmet
+    <Helmet
       htmlAttributes={{
         lang,
       }}
@@ -57,7 +56,7 @@ function Seo({ description, lang, meta, title }) {
           content: metaDescription,
         },
       ].concat(meta)}
-    /> */}
+    />
   )
 }
 
