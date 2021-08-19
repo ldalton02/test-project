@@ -7,29 +7,17 @@
 
 import * as React from "react"
 import PropTypes from "prop-types"
-import { Helmet } from "react-helmet"
-import { useStaticQuery, graphql } from "gatsby"
 
 function Seo({ description, lang, meta, title }) {
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            author
-          }
-        }
-      }
-    `
-  )
-
-  const metaDescription = description || site.siteMetadata.description
-  const defaultTitle = site.siteMetadata?.title
+  
+ // const metaDescription = description || site.siteMetadata.description
+ // const defaultTitle = site.siteMetadata?.title
 
   return (
-    <Helmet
+    <p>
+      Build 
+    </p>
+    {/* <Helmet
       htmlAttributes={{
         lang,
       }}
@@ -69,7 +57,7 @@ function Seo({ description, lang, meta, title }) {
           content: metaDescription,
         },
       ].concat(meta)}
-    />
+    /> */}
   )
 }
 
