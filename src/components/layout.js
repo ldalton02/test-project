@@ -12,12 +12,6 @@ const Layout = ({ children }) => {
 
   const [currUser, setCurrUser] = useState(null);
 
-  // set a watch on auth object to do this?
-
-  const onAuth = firebase.auth().onAuthStateChanged(firebaseUser => {
-    setCurrUser(firebaseUser);
-  })
-
   return (
     <div className="App">
       <Header siteTitle="Make a Bucket List" />
