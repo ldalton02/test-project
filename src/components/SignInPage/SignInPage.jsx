@@ -31,7 +31,6 @@ const SignInPage = (props) => {
     const [confirmPassword, setConfirmPassword] = useState(null);
     const [signInSuccessful, setSignInSuccessful] = useState(false);
 
-
     const [mode, setMode] = useState('sign-in');
 
     const changeMode = (newMode) => {
@@ -39,11 +38,8 @@ const SignInPage = (props) => {
         setMode(newMode);
     }
 
-
-
     const [errorText, setErrorText] = useState(null);
-
-
+    
     const createAccount = () => {
         var user = null;
         if (confirmPassword !== password) {

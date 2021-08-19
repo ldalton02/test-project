@@ -75,7 +75,7 @@ const Modal = (props) => {
         <ReactModal
             className="Modal"
             isOpen={open}
-            appElement={'#___gatsby'}
+            appElement={typeof window !== 'undefined' ? document.getElementById('___gatsby') : null} // need this for gatsby to build, can't have access to window elements on server side render
         >
             <h3>
                 Add a Bucket List Item

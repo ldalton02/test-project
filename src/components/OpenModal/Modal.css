@@ -39,3 +39,8 @@
 .Edit-modal-buttons {
     grid-template-columns: 1fr 1fr 1fr;
 }
+
+
+.modal-error {
+    color: red;
+}

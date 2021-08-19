@@ -1,6 +1,6 @@
 .sign-in-main-div {
     width: 100%;
-    height: 80vh;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -9,6 +9,9 @@ import TextField from '@material-ui/core/TextField';
 
 import './Modal.css'
 import SimpleButton from '../SimpleButton/SimpleButton';
+import firebase from "gatsby-plugin-firebase"
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,10 +54,17 @@ const EditModal = (props) => {
 
     const [open, setOpen] = useState(isOpen);
 
-    useEffect(() => {
-        setOpen(isOpen);
-    }, [isOpen])
+    const [errorText, setErrorText] = useState(null);
 
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (!firebase.auth().currentUser) {
+                setErrorText('You must be signed in to edit a bucket list.')
+            }
+        }
+        setOpen(isOpen);
+
+    }, [isOpen])
 
     useEffect(() => {
         setName(values.name);
@@ -77,7 +87,7 @@ const EditModal = (props) => {
         <ReactModal
             className="Modal"
             isOpen={open}
-            appElement={'#___gatsby'}
+            appElement={typeof window !== 'undefined' ? document.getElementById('___gatsby') : null}
         >
             <h3>
                 Edit a Bucket List Item
@@ -110,6 +120,9 @@ const EditModal = (props) => {
                     onChange={value => setUrl(value.target.value)}
                 />
             </form>
+            <p className="modal-error">
+                {errorText}
+            </p>
             <div className="Modal-buttons Edit-modal-buttons">
                 <SimpleButton buttonClick={closeModal}>
                     Close
