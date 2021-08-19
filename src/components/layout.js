@@ -7,15 +7,6 @@ import "./layout.css"
 import firebase from "gatsby-plugin-firebase"
 import 'firebase/auth';
 
-/*
-idea
-
-Implemet login storage/state in the top level layout component.
-Will be able to store if the user is logged in here and pass down to every component
-
-
-*/
-
 const Layout = ({ children }) => {
   const [loggedin, setLoggedin] = useState(false);
 
@@ -35,10 +26,17 @@ const Layout = ({ children }) => {
         style={{
           marginTop: `2rem`,
         }}
+        className="footer-style"
       >
-        © {new Date().getFullYear()}, Built with
-        {` `}
-        <a href="https://www.gatsbyjs.com">Gatsby</a>
+        <span className="footer-left-section">
+          © {new Date().getFullYear()}, Built with
+          {` `}
+          <a href="https://www.gatsbyjs.com">Gatsby</a>
+        </span>
+        <span className="footer-middle-section"> Designed and Built by Luke Dalton </span>
+        <span className="footer-right-section">
+          View the source code here!
+        </span>
       </footer>
     </div>
   );

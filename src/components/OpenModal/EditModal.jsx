@@ -80,7 +80,7 @@ const EditModal = (props) => {
             appElement={document.getElementById('___gatsby')}
         >
             <h3>
-                Add a Bucket List Item
+                Edit a Bucket List Item
             </h3>
             <form className="Modal-form">
                 <CssTextField
