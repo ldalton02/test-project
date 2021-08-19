@@ -75,7 +75,7 @@ const Modal = (props) => {
         <ReactModal
             className="Modal"
             isOpen={open}
-            appElement={document.getElementById('___gatsby')}
+            appElement={'#___gatsby'}
         >
             <h3>
                 Add a Bucket List Item

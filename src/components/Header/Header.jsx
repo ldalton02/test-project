@@ -2,11 +2,6 @@ import React, {useState} from "react"
 import PropTypes from "prop-types"
 import { Link } from "gatsby"
 import './Header.css'
-import firebase from "gatsby-plugin-firebase"
-
-const handleSignOut = () => {
-    firebase.auth().signOut();
-}
 
 
 const headerLinks = [
@@ -22,16 +17,6 @@ const headerLinks = [
 const Header = (props) => {
 
     const { siteTitle } = props;
-
-    const [currentUser, setCurrentUser] = useState(firebase.auth().currentUser);
-
-    firebase.auth().onAuthStateChanged(() => {
-        if (!firebase.auth().currentUser) {
-            setCurrentUser(null);
-        } else {
-            setCurrentUser(firebase.auth().currentUser);
-        }
-    })
 
     return (
         <header
@@ -63,11 +48,10 @@ const Header = (props) => {
                     <h4 className="header-h4">
                         <Link className="header-link" to="/sign-in"> Sign In </Link>
                     </h4>
-                    { currentUser && 
                     <h4 className="header-h4">
                         <Link className="header-link" to='/sign-out'> Sign Out </Link>
                     </h4>
-                    }
+                    
                 </div>
             </div>
         </header>

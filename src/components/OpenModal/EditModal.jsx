@@ -77,7 +77,7 @@ const EditModal = (props) => {
         <ReactModal
             className="Modal"
             isOpen={open}
-            appElement={document.getElementById('___gatsby')}
+            appElement={'#___gatsby'}
         >
             <h3>
                 Edit a Bucket List Item

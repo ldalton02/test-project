@@ -113,7 +113,7 @@ const SignInPage = (props) => {
             <Popover
                 id={popupOpen ? 'sign-in-popup' : undefined}
                 open={popupOpen}
-                anchorEl={document.getElementById('sign-in-title')}
+                anchorEl={'#sign-in-title'}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'center',
