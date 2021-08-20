@@ -32,7 +32,7 @@ const Header = (props) => {
         } else {
             setIsSignedIn(false);
         }
-    }, [firebase.auth().currentUser])
+    }, [typeof window !== 'undefined' ? firebase.auth().currentUser : null])
 
     const [popupOpen, setPopupOpen] = useState(false);
     const handleSignOut = () => {
@@ -49,7 +49,7 @@ const Header = (props) => {
             }}
         >
             <Popover
-                id={'sign-out-popup' }
+                id={'sign-out-popup'}
                 open={popupOpen}
                 //anchorEl={'#sign-in-title'}
                 anchorOrigin={{
@@ -91,7 +91,7 @@ const Header = (props) => {
                     <h4 className="header-h4">
                         <Link className="header-link" to="/sign-in"> Sign In </Link>
                     </h4>
-                    { isSignedIn && 
+                    {isSignedIn &&
                         <h4 className="header-h4" onClick={handleSignOut}>
                             <Link className="header-link"> Sign Out </Link>
                         </h4>
