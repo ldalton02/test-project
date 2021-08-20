@@ -1,19 +1,13 @@
 import ReactModal from 'react-modal';
 import React, { useState, useEffect } from 'react';
 import {
-    alpha,
-    ThemeProvider,
     withStyles,
     makeStyles,
-    createTheme,
 } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
-import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import { green } from '@material-ui/core/colors';
 import './Modal.css'
 import SimpleButton from '../SimpleButton/SimpleButton';
+import firebase from "gatsby-plugin-firebase"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,20 +50,35 @@ const Modal = (props) => {
 
     const [open, setOpen] = useState(isOpen);
 
+    const [signedIn, setSignedIn] = useState(false);
+    const [errorText, setErrorText] = useState(null);
+
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (!firebase.auth().currentUser) {
+                setErrorText('You must be signed in to add a bucket list item.')
+                setSignedIn(false);
+            } else {
+                setErrorText(null);
+                setSignedIn(false);
+            }
+        }
         setOpen(isOpen);
     }, [isOpen])
 
-   
-   const [name, setName] = useState(null);
-   const [location, setLocation] = useState(null);
-   const [url, setUrl] = useState(null);
-   
+    const [name, setName] = useState(null);
+    const [location, setLocation] = useState(null);
+    const [url, setUrl] = useState(null);
+
     const saveFunction = () => {
         submitFunction(name, location, url);
         closeModal();
     }
-   
+
+    const doNothing = () => {
+        
+    }
+
     return (
         <ReactModal
             className="Modal"
@@ -104,12 +113,15 @@ const Modal = (props) => {
                     onChange={value => setUrl(value.target.value)}
                 />
             </form>
+            <p className="modal-error">
+                {errorText}
+            </p>
             <div className="Modal-buttons Create-modal-buttons">
                 <SimpleButton buttonClick={closeModal}>
                     Close
                 </SimpleButton>
-                <SimpleButton buttonClick={saveFunction}>
-                    Save
+                <SimpleButton buttonClick={signedIn ? saveFunction : doNothing }>
+                    Add
                 </SimpleButton>
             </div>
         </ReactModal>

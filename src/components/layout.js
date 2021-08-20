@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
         </span>
         <span className="footer-middle-section"> Designed and Built by Luke Dalton </span>
         <span className="footer-right-section">
-          View the source code here!
+          View the source code <a href="https://github.com/ldalton02/test-project">here!</a>
         </span>
       </footer>
     </div>

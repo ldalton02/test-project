@@ -54,16 +54,20 @@ const EditModal = (props) => {
 
     const [open, setOpen] = useState(isOpen);
 
+    const [signedIn, setSignedIn] = useState(false);
     const [errorText, setErrorText] = useState(null);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             if (!firebase.auth().currentUser) {
                 setErrorText('You must be signed in to edit a bucket list.')
+                setSignedIn(false);
+            } else {
+                setErrorText(null);
+                setSignedIn(true);
             }
         }
         setOpen(isOpen);
-
     }, [isOpen])
 
     useEffect(() => {
@@ -81,6 +85,10 @@ const EditModal = (props) => {
     const saveButton = () => {
         saveEdits(name, location, url, values.index);
         closeModal();
+    }
+    
+    const doNothing = () => {
+        
     }
 
     return (
@@ -127,11 +135,11 @@ const EditModal = (props) => {
                 <SimpleButton buttonClick={closeModal}>
                     Close
                 </SimpleButton>
-                <SimpleButton buttonClick={() => deleteItem(values.index)}
+                <SimpleButton buttonClick={signedIn ? () => deleteItem(values.index) : doNothing}
                     deleteButton={true}>
                     Delete This Item
                 </SimpleButton>
-                <SimpleButton buttonClick={saveButton}>
+                <SimpleButton buttonClick={signedIn ? saveButton : doNothing}>
                     Save
                 </SimpleButton>
             </div>

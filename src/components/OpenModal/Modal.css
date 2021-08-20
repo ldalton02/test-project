@@ -30,6 +30,7 @@
     width: 75%;
     display: grid;
     align-items: center;
+    margin-top: 1em;
 }
 
 .Create-modal-buttons {
