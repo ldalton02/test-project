@@ -71,9 +71,6 @@ const SimpleCard = (props) => {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button color="rebeccapurple">
-                    Add To Your List
-                </Button>
                 <Button onClick={() => getAnother()}  color="rebeccapurple">
                     Get Another
                 </Button>

@@ -3,7 +3,6 @@ import axios from 'axios';
 import WordCloud from './elements/WordCloud/WordCloud';
 import Suggestion from './elements/Suggestions/Suggestions';
 import Grid from '@material-ui/core/Grid';
-import SimpleButtonGroup from '../SimpleButtonGroup/SimpleButtonGroup';
 import LoadingIcons from 'react-loading-icons'
 import firebase from "gatsby-plugin-firebase"
 import { snapshotToArray, getWordCloudData } from '../../utils/firebasedata';

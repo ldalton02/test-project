@@ -14,7 +14,6 @@ import FormControl from '@material-ui/core/FormControl';
 import { green } from '@material-ui/core/colors';
 import './Modal.css'
 import SimpleButton from '../SimpleButton/SimpleButton';
-import SimpleButtonGroup from '../SimpleButtonGroup/SimpleButtonGroup';
 
 const useStyles = makeStyles((theme) => ({
     root: {
